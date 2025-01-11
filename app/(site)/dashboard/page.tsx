@@ -151,7 +151,7 @@ const Page = (props: Props) => {
             <div className="flex flex-col justify-center items-center text-sm text-center p-4 w-48 gap-2 border border-gray-500 rounded-lg">
               <h3 className="font-bold">Step-1 : Upload</h3>
               <p>
-                Click "Upload" and add your PDF. Your file stays secure and
+                Click Upload and add your PDF. Your file stays secure and
                 private.
               </p>
             </div>
