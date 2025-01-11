@@ -38,9 +38,9 @@ function DesktopNavbar() {
 }
 
 const items = [
-  { label: "Statics", link: "/dashboard" },
+  { label: "Dashboard", link: "/dashboard" },
   { label: "Products", link: "/products" },
-  { label: "Manage", link: "/manage" },
+  { label: "GetPlus+", link: "/getplus" },
 ];
 
 function MobileNavbar() {
