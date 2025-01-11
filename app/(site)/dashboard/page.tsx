@@ -32,7 +32,7 @@ type ImageData = {
   data: string; // Base64-encoded string
 };
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
   const user = useCurrentUser();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [chats, setChats] = useState<Chat[]>([]);
@@ -249,4 +249,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;
