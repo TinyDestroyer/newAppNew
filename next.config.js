@@ -6,20 +6,34 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'standalone',
+
     experimental: {
       serverComponentsExternalPackages: ["pdf-parse"],
+      optimizeCss: false,
+      scrollRestoration: false,
     },
-    webpack: (config, { isServer }) => {
+    webpack: (config, { isServer,dev }) => {
       // If it's server-side code (API routes), exclude onnxruntime-node from Webpack bundling
-      if (isServer) {
-        config.externals.push('onnxruntime-node');
-
-        config.externals.push({
-          'pdf-parse': 'pdf-parse',
-          'canvas': 'canvas',
-          '@huggingface/transformers': '@huggingface/transformers'
-        });
+      if (!dev && isServer) {
+        config.externals = [
+          ...(config.externals || []),
+          'onnxruntime-node',
+          'pdf-parse',
+          'canvas',
+          '@huggingface/transformers'
+        ];
       }
+  
+      // Add these optimizations
+      config.optimization = {
+        ...config.optimization,
+        minimize: true,
+        splitChunks: {
+          chunks: 'all',
+          minSize: 20000,
+          maxSize: 244000,
+        }
+      };
   
       // Add a rule for handling .node files using node-loader
       config.module.rules.push({
