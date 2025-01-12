@@ -7,9 +7,9 @@ interface ProtectedLayoutProps {
 
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   return (
-    <div className="h-full w-full bg-red-500">
+    <div className="max-h-screen min-h-screen w-full bg-[#141414] flex flex-col">
       <Appbar />
-      {children}
+      <div className="flex flex-grow overflow-y-auto h-full w-full">{children}</div>
     </div>
   );
 };
