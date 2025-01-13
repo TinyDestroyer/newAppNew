@@ -63,33 +63,33 @@ const Page = (props: Props) => {
       }
       const imgs = result.images;
 
-      const worker = await createWorker();
-      let imgText = []
-      if(imgs){
-        for(let i = 0; i < imgs.length; i++){
-          // Decode Base64 to binary
-          const binaryString = atob(imgs[i].data);
-          const binaryLength = binaryString.length;
-          const binaryArray = new Uint8Array(binaryLength);
+      // const worker = await createWorker();
+      // let imgText = []
+      // if(imgs){
+      //   for(let i = 0; i < imgs.length; i++){
+      //     // Decode Base64 to binary
+      //     const binaryString = atob(imgs[i].data);
+      //     const binaryLength = binaryString.length;
+      //     const binaryArray = new Uint8Array(binaryLength);
   
-          for (let i = 0; i < binaryLength; i++) {
-            binaryArray[i] = binaryString.charCodeAt(i);
-          }
+      //     for (let i = 0; i < binaryLength; i++) {
+      //       binaryArray[i] = binaryString.charCodeAt(i);
+      //     }
   
-          // Create a Blob
-          const blob = new Blob([binaryArray], { type: 'image/png' }); 
-          const ret = await worker.recognize(blob);
-          imgText.push(ret.data.text)
-        }
-      }
+      //     // Create a Blob
+      //     const blob = new Blob([binaryArray], { type: 'image/png' }); 
+      //     const ret = await worker.recognize(blob);
+      //     imgText.push(ret.data.text)
+      //   }
+      // }
 
-      formData.append("imgText", JSON.stringify(imgText));
-      const imgTextUpload = await fetch("/api/imageUpload", {
-        method : "POST",
-        body: formData,
-      })
+      // formData.append("imgText", JSON.stringify(imgText));
+      // const imgTextUpload = await fetch("/api/imageUpload", {
+      //   method : "POST",
+      //   body: formData,
+      // })
 
-      await worker.terminate();
+      // await worker.terminate();
     } else {
       console.log("No file uploaded");
     }
