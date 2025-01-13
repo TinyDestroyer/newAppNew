@@ -99,9 +99,11 @@ const Page = (props: Props) => {
     setLoading(true);
     setQuery("");
     setChats((prev) => [...prev, {name: "user", chat: query}]);
+    console.log("yaha to aaya");
     const response = await fetch(`/api/chat?user=${user!.name}&query=${query}`, {
       method: "GET",
     });
+    console.log(response.status);
     if(response.status == 404){
       setLoading(false);
       setChats((prev) => [...prev, {name:"system", chat:"kuch gadbad hogyi"}]);
