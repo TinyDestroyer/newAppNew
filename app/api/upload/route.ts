@@ -30,42 +30,42 @@ export async function POST(req: Request){
       });
     }
 
-    const data = [];
-    const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
+    const data : any = [];
+    // const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
 
-    for(let file of files){
-      if(file instanceof File){
-        const arrayBuffer = await file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
+    // for(let file of files){
+    //   if(file instanceof File){
+    //     const arrayBuffer = await file.arrayBuffer();
+    //     const buffer = Buffer.from(arrayBuffer);
 
-        const pdfData = await pdf(buffer);
+    //     const pdfData = await pdf(buffer);
 
-        const sentences = pdfData.text
-        .replace(/\n/g, ' ') // Replace all newlines with spaces
-        .split(/(?<=\.)\s+/) // Split by full stop followed by whitespace
-        .map((sentence) => sentence.trim()) // Trim whitespace from each sentence
-        .filter((sentence) => sentence.length > 0); // Remove empty strings
+    //     const sentences = pdfData.text
+    //     .replace(/\n/g, ' ') // Replace all newlines with spaces
+    //     .split(/(?<=\.)\s+/) // Split by full stop followed by whitespace
+    //     .map((sentence) => sentence.trim()) // Trim whitespace from each sentence
+    //     .filter((sentence) => sentence.length > 0); // Remove empty strings
 
-        for(let i = 0; i < sentences.length; i++){
-          const embeddings = await embedder(sentences[i]);
+    //     for(let i = 0; i < sentences.length; i++){
+    //       const embeddings = await embedder(sentences[i]);
 
-          const newArray = embeddings.tolist();
-          const pooledEmbedding = newArray[0].reduce((acc: number[], row: number[]) => 
-            acc.map((value, index) => value + row[index] / newArray[0].length), 
-            new Array(384).fill(0)
-          );
-          const newData = {
-            id: `sentence-${Date.now()}-${i}`,
-            values: pooledEmbedding,
-            metadata:{
-              text: sentences[i],
-              user
-            }
-          };
-          data.push(newData);
-        }
-      }
-    }
+    //       const newArray = embeddings.tolist();
+    //       const pooledEmbedding = newArray[0].reduce((acc: number[], row: number[]) => 
+    //         acc.map((value, index) => value + row[index] / newArray[0].length), 
+    //         new Array(384).fill(0)
+    //       );
+    //       const newData = {
+    //         id: `sentence-${Date.now()}-${i}`,
+    //         values: pooledEmbedding,
+    //         metadata:{
+    //           text: sentences[i],
+    //           user
+    //         }
+    //       };
+    //       data.push(newData);
+    //     }
+    //   }
+    // }
 
     if(data.length > 0){
       try {
