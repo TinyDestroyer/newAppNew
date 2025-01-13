@@ -100,7 +100,7 @@ const Page = (props: Props) => {
     setQuery("");
     setChats((prev) => [...prev, {name: "user", chat: query}]);
     console.log("yaha to aaya");
-    const response = await fetch(`/api/chat?user=${user!.name}&query=${query}`, {
+    const response = await fetch(`https://new-app-new.vercel.app/api/chat?user=${user!.name}&query=${query}`, {
       method: "GET",
     });
     console.log(response.status);
