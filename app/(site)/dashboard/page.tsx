@@ -100,7 +100,7 @@ const Page = (props: Props) => {
     setQuery("");
     setChats((prev) => [...prev, {name: "user", chat: query}]);
     try {
-      const response = await fetch(`/api/chat?user=${user!.name}&query=${query}`, {
+      const response = await fetch(`/api/chat/route.ts?user=${user!.name}&query=${query}`, {
         method: "GET",
       });
       if (!response.ok) {
