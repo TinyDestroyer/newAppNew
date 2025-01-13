@@ -99,18 +99,18 @@ const Page = (props: Props) => {
     setLoading(true);
     setQuery("");
     setChats((prev) => [...prev, {name: "user", chat: query}]);
-    console.log("yaha to aaya");
-    const response = await fetch(`https://new-app-new.vercel.app/api/chat?user=${user!.name}&query=${query}`, {
-      method: "GET",
-    });
-    console.log(response.status);
-    if(response.status == 404){
+    try {
+      const response = await fetch(`/api/chat?user=${user!.name}&query=${query}`, {
+        method: "GET",
+      });
+      const result = await response.json();
       setLoading(false);
-      setChats((prev) => [...prev, {name:"system", chat:"kuch gadbad hogyi"}]);
+      setChats((prev) => [...prev, {name:"system", chat: result}]);
+    } catch (error) {
+      setChats((prev) => [...prev, {name: "system", chat: "An error occurred"}]);
+    }finally{
+      setLoading(false);
     }
-    const result = await response.json();
-    setLoading(false);
-    setChats((prev) => [...prev, {name:"system", chat: result}]);
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
