@@ -102,7 +102,7 @@ const Page = (props: Props) => {
     const response = await fetch(`/api/chat?user=${user!.name}&query=${query}`, {
       method: "GET",
     });
-    if(!response.ok){
+    if(response.status == 404){
       setLoading(false);
       setChats((prev) => [...prev, {name:"system", chat:"kuch gadbad hogyi"}]);
     }
