@@ -1,6 +1,5 @@
 import pdf from "pdf-parse";
 import { NextResponse } from "next/server";
-// import { pipeline } from "@huggingface/transformers";
 import { Pinecone } from '@pinecone-database/pinecone';
 
 const pinecone = new Pinecone({
@@ -8,15 +7,7 @@ const pinecone = new Pinecone({
 });
 const index = pinecone.index('docrux');
 
-export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
-
-// export const config = {
-//   runtime: 'edge',
-//   api: {
-//     bodyParser: false, // This is needed for file uploads
-//   },
-// };
 
 export async function POST(req: Request){
   try {
@@ -30,42 +21,52 @@ export async function POST(req: Request){
       });
     }
 
-    const data : any = [];
+    let data : any = [];
     // const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
 
-    // for(let file of files){
-    //   if(file instanceof File){
-    //     const arrayBuffer = await file.arrayBuffer();
-    //     const buffer = Buffer.from(arrayBuffer);
+    for(let file of files){
+      if(file instanceof File){
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
 
-    //     const pdfData = await pdf(buffer);
+        const pdfData = await pdf(buffer);
 
-    //     const sentences = pdfData.text
-    //     .replace(/\n/g, ' ') // Replace all newlines with spaces
-    //     .split(/(?<=\.)\s+/) // Split by full stop followed by whitespace
-    //     .map((sentence) => sentence.trim()) // Trim whitespace from each sentence
-    //     .filter((sentence) => sentence.length > 0); // Remove empty strings
+        const sentences = pdfData.text
+        .replace(/\n/g, ' ') // Replace all newlines with spaces
+        .split(/(?<=\.)\s+/) // Split by full stop followed by whitespace
+        .map((sentence) => sentence.trim()) // Trim whitespace from each sentence
+        .filter((sentence) => sentence.length > 0); // Remove empty strings
 
-    //     for(let i = 0; i < sentences.length; i++){
-    //       const embeddings = await embedder(sentences[i]);
+        for(let sentence of sentences){
+            formData.append("sentences",sentence);
+        }
 
-    //       const newArray = embeddings.tolist();
-    //       const pooledEmbedding = newArray[0].reduce((acc: number[], row: number[]) => 
-    //         acc.map((value, index) => value + row[index] / newArray[0].length), 
-    //         new Array(384).fill(0)
-    //       );
-    //       const newData = {
-    //         id: `sentence-${Date.now()}-${i}`,
-    //         values: pooledEmbedding,
-    //         metadata:{
-    //           text: sentences[i],
-    //           user
-    //         }
-    //       };
-    //       data.push(newData);
-    //     }
-    //   }
-    // }
+        data = await fetch('http://127.0.0.1:5000/embeddings',{
+            method: "POST",
+            body: formData,
+        })
+
+        // for(let i = 0; i < sentences.length; i++){
+        //   const embeddings = await embedder(sentences[i]);
+        //   const embeddings = await model.encode(sentences);
+
+        //   const newArray = embeddings.tolist();
+        //   const pooledEmbedding = newArray[0].reduce((acc: number[], row: number[]) => 
+        //     acc.map((value, index) => value + row[index] / newArray[0].length), 
+        //     new Array(384).fill(0)
+        //   );
+        //   const newData = {
+        //     id: `sentence-${Date.now()}-${i}`,
+        //     values: pooledEmbedding,
+        //     metadata:{
+        //       text: sentences[i],
+        //       user
+        //     }
+        //   };
+        //   data.push(newData);
+        // }
+      }
+    }
 
     if(data.length > 0){
       try {
@@ -75,11 +76,12 @@ export async function POST(req: Request){
       }
     }
 
-    const imgData = await  fetch('http://127.0.0.1:5000/pdf-img', {
-          method: 'POST',
-          body: formData,
-    });
-    const imgs = await imgData.json();
+    // const imgData = await  fetch('http://127.0.0.1:5000/pdf-img', {
+    //       method: 'POST',
+    //       body: formData,
+    // });
+    // const imgs = await imgData.json();
+    const imgs :any = [];
     
     return NextResponse.json({"images" : imgs});
 
