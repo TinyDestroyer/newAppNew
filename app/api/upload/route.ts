@@ -14,6 +14,7 @@ export const runtime = 'nodejs';
 
 export async function POST(req: Request){
   try {
+    console.log("upload point1");
     const formData = await req.formData();
     const user = formData.get("user");
     const files = formData.getAll("files");
@@ -25,6 +26,7 @@ export async function POST(req: Request){
     }
 
     let data : any = [];
+    console.log("upload point2");
     // const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
 
     for(let file of files){
@@ -65,7 +67,7 @@ export async function POST(req: Request){
         }
       }
     }
-
+    console.log("upload point3");
     if(data.length > 0){
       try {
         await index.upsert(data);
@@ -73,7 +75,7 @@ export async function POST(req: Request){
         console.error("Error upserting vectors:", error);
       }
     }
-
+    console.log("upload point4");
     const imgData = await  fetch('http://127.0.0.1:5000/pdf-img', {
           method: 'POST',
           body: formData,
