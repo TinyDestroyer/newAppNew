@@ -8,6 +8,7 @@ const pinecone = new Pinecone({
 });
 const index = pinecone.index('docrux');
 
+export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 // export const config = {
