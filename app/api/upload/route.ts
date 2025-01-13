@@ -1,6 +1,6 @@
 import pdf from "pdf-parse";
 import { NextResponse } from "next/server";
-import { pipeline } from "@huggingface/transformers";
+// import { pipeline } from "@huggingface/transformers";
 import { Pinecone } from '@pinecone-database/pinecone';
 
 const pinecone = new Pinecone({
