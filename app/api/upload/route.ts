@@ -1,6 +1,9 @@
 import pdf from "pdf-parse";
 import { NextResponse } from "next/server";
 import { Pinecone } from '@pinecone-database/pinecone';
+import { HfInference } from '@huggingface/inference';
+
+const hf = new HfInference(process.env.HF_TOKEN);
 
 const pinecone = new Pinecone({
   apiKey: process.env.PINECONE_API_KEY!
@@ -37,34 +40,29 @@ export async function POST(req: Request){
         .map((sentence) => sentence.trim()) // Trim whitespace from each sentence
         .filter((sentence) => sentence.length > 0); // Remove empty strings
 
-        for(let sentence of sentences){
-            formData.append("sentences",sentence);
-        }
-
-        data = await fetch('http://127.0.0.1:5000/embeddings',{
-            method: "POST",
-            body: formData,
+        const embeddings = await hf.featureExtraction({
+            model: 'sentence-transformers/all-MiniLM-L6-v2',
+            inputs: sentences,
         })
 
-        // for(let i = 0; i < sentences.length; i++){
+        for(let i = 0; i < embeddings.length; i++){
         //   const embeddings = await embedder(sentences[i]);
-        //   const embeddings = await model.encode(sentences);
 
         //   const newArray = embeddings.tolist();
         //   const pooledEmbedding = newArray[0].reduce((acc: number[], row: number[]) => 
         //     acc.map((value, index) => value + row[index] / newArray[0].length), 
         //     new Array(384).fill(0)
         //   );
-        //   const newData = {
-        //     id: `sentence-${Date.now()}-${i}`,
-        //     values: pooledEmbedding,
-        //     metadata:{
-        //       text: sentences[i],
-        //       user
-        //     }
-        //   };
-        //   data.push(newData);
-        // }
+          const newData = {
+            id: `sentence-${Date.now()}-${i}`,
+            values: embeddings[i],
+            metadata:{
+              text: sentences[i],
+              user
+            }
+          };
+          data.push(newData);
+        }
       }
     }
 
@@ -76,12 +74,11 @@ export async function POST(req: Request){
       }
     }
 
-    // const imgData = await  fetch('http://127.0.0.1:5000/pdf-img', {
-    //       method: 'POST',
-    //       body: formData,
-    // });
-    // const imgs = await imgData.json();
-    const imgs :any = [];
+    const imgData = await  fetch('http://127.0.0.1:5000/pdf-img', {
+          method: 'POST',
+          body: formData,
+    });
+    const imgs = await imgData.json();
     
     return NextResponse.json({"images" : imgs});
 
