@@ -8,6 +8,7 @@ const nextConfig = {
     output: 'standalone',
 
     experimental: {
+      runtime: 'nodejs',
       serverComponentsExternalPackages: ["pdf-parse"],
       optimizeCss: false,
       scrollRestoration: false,

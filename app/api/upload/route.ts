@@ -10,13 +10,6 @@ const index = pinecone.index('docrux');
 
 export const runtime = 'nodejs';
 
-// export const config = {
-//   runtime: 'edge',
-//   api: {
-//     bodyParser: false, // This is needed for file uploads
-//   },
-// };
-
 export async function POST(req: Request){
   try {
     const formData = await req.formData();
