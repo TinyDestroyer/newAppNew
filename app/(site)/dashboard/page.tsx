@@ -103,6 +103,11 @@ const Page = (props: Props) => {
       const response = await fetch(`/api/chat?user=${user!.name}&query=${query}`, {
         method: "GET",
       });
+      if (!response.ok) {
+        setLoading(false);
+        setChats((prev) => [...prev, {name: "system", chat: "An error occurred"}]);
+        return;
+      }
       const result = await response.json();
       setLoading(false);
       setChats((prev) => [...prev, {name:"system", chat: result}]);
