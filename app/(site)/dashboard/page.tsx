@@ -96,11 +96,13 @@ const Page = (props: Props) => {
   };
 
   const queryHandler = async () => {
+    console.log("hello from here");
     setLoading(true);
     setQuery("");
     setChats((prev) => [...prev, {name: "user", chat: query}]);
+    console.log("hello from point 2");
     try {
-      const response = await fetch(`/api/chat/route.ts?user=${user!.name}&query=${query}`, {
+      const response = await fetch(`/api/chat?user=${user!.name}&query=${query}`, {
         method: "GET",
       });
       if (!response.ok) {
@@ -116,6 +118,7 @@ const Page = (props: Props) => {
     }finally{
       setLoading(false);
     }
+    console.log("hello from point 3");
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
