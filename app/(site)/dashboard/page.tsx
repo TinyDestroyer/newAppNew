@@ -104,6 +104,9 @@ const Page = (props: Props) => {
       console.log("hello from point 2");
       const response = await fetch(`/api/chat?user=${user!.name}&query=${query}`, {
         method: "GET",
+        headers: {
+          'Accept': 'application/json'
+        }
       });
       if (!response.ok) {
         setLoading(false);
