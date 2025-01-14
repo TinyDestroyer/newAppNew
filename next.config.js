@@ -15,10 +15,10 @@ const nextConfig = {
       }
   
       // Add a rule for handling .node files using node-loader
-      config.module.rules.push({
-        test: /\.node$/,
-        use: 'node-loader', // Ensure Webpack knows how to handle .node files
-      });
+      // config.module.rules.push({
+      //   test: /\.node$/,
+      //   use: 'node-loader', // Ensure Webpack knows how to handle .node files
+      // });
   
       return config;
     },
