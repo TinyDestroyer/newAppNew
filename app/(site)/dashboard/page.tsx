@@ -96,7 +96,7 @@ const Page = (props: Props) => {
   };
 
   const queryHandler = async () => {
-    const log = (...args) => console.log(JSON.stringify(args));
+    const log = (...args : any) => console.log(JSON.stringify(args));
     console.log("hello from here");
     try {
       setLoading(true);
