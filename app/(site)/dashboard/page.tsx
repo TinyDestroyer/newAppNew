@@ -97,11 +97,11 @@ const Page = (props: Props) => {
 
   const queryHandler = async () => {
     console.log("hello from here");
-    setLoading(true);
-    setQuery("");
-    setChats((prev) => [...prev, {name: "user", chat: query}]);
-    console.log("hello from point 2");
     try {
+      setLoading(true);
+      setQuery("");
+      setChats((prev) => [...prev, {name: "user", chat: query}]);
+      console.log("hello from point 2");
       const response = await fetch(`/api/chat?user=${user!.name}&query=${query}`, {
         method: "GET",
       });
