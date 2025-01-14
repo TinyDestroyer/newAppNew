@@ -257,7 +257,7 @@ const Page = (props: Props) => {
                 placeholder="Curious about your document? Start asking!"
                 className="h-10 px-5 text-base bg-gray-50 rounded-2xl w-3/5 text-gray-700 focus:outline-none placeholder:text-gray-400 placeholder:italic placeholder:font-sans"
               />
-              <button disabled = {query == "" ? true : false} onClick={queryHandler}>
+              <button disabled = {query == "" ? true : false} onClick={e => {alert("aaya"); queryHandler()}}>
                 <VscSend className={`transition ease-in-out duration-300 ${query == "" ? "text-gray-700" : "text-gray-400 hover:scale-110 hover:text-white"}`} />
               </button>
             </div>
