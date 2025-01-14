@@ -134,7 +134,7 @@ const Page = (props: Props) => {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      queryHandler();
+      test();
     }
   };
 
